@@ -65,20 +65,20 @@
 * 新建存放具体类别的**字典**文件（取决于标注时的输入），如`camera_dataset.json`
 * 之后，需要新建继承了Pytorch的DataSet类的数据集文件，如`camera_dataset.py`
 
-## Step2 确保提前下载好对应预训练模型权重（下载后放入backbone文件夹中，并改名）
+### Step2 确保提前下载好对应预训练模型权重（下载后放入backbone文件夹中，并改名）
 * MobileNetV2 backbone: https://download.pytorch.org/models/mobilenet_v2-b0353104.pth
 * ResNet50+FPN backbone: https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
 
-## Step3 训练前期的路径及参数调整
+### Step3 训练前期的路径及参数调整
 * `train_res50_fpn.py`中需要导入我们自己定义的数据集，进行部分路径的修改，主要参数修改：num_classes,learning rate(lr),lr调整策略,总epoch数(一般来说越大越好)和batch_size(不爆内存的最大值)  
 * 另一个要修改的参数主要在`network_files/faster_rcnn_framework.py`中，FasterRCNN类下的proposal数,NMS阈值
 
-## Step4 训练模型
+### Step4 训练模型
 * `conda activate pytorch16`
 * 若要训练mobilenetv2+fasterrcnn，直接使用`python train_mobilenet.py`训练脚本
 * 若要训练resnet50+fpn+fasterrcnn，直接使用`python train_resnet50_fpn.py`训练脚本
 * 若要使用多GPU训练，使用```python -m torch.distributed.launch --nproc_per_node=8 --use_env train_multi_GPU.py```指令,```nproc_per_node```参数为使用GPU数量
 
-# 学习资料
+## 学习资料
 https://github.com/WZMIAOMIAO/deep-learning-for-image-processing
 https://space.bilibili.com/18161609?from=search&seid=15900069256992135357
