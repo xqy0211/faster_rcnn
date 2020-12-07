@@ -6,6 +6,7 @@
   Windows:pip install pycocotools-windows(不需要额外安装vs))
 
 ## 文件结构：
+本地路径："G:\xqy\faster_rcnn"
 ```
 * ├── backbone: 特征提取网络，可以根据自己的要求选择
 * ├── network_files: Faster R-CNN网络（包括Fast R-CNN以及RPN等模块）
@@ -22,12 +23,25 @@
 * Pascal VOC2012 train/val数据集下载地址：http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
 * PCB_DATASET：参考https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB
 * DAGM_DATASET：参考https://www.pythonf.cn/read/127802
+* CAMERA_DATASET：本项目的数据集，目前已采集fpccrease(FPC表面划痕)
 * 以上数据集本地都有
 
 ## 项目流程
 
 ### Step1 确保提前准备好数据集
-* 首先的数据的采集（网上找或者拍照）与增强（用CV方法进行P图或者用SinGAN生成训练样本），之后进行标注
+* 首先的数据的采集（网上找或者拍照）与增强（用CV方法进行P图或者用SinGAN生成训练样本），之后进行标注   
+    1、**拍照**：相机得到图像为bmp图像，VOC要求图像格式为JPEG，  
+    2、**CV方法**：运行`python image_expand.py`将generated路径下的每个图像样本按照0.4~1的比率随机裁剪，并按1/4的概率选择翻转模式，每个样本生成20个样本  
+    3、**SinGAN方法**：更多细节参见https://github.com/tamarott/SinGAN，相关参数配置已在本地安装好，在Pytorch13版本下：  
+        * 将要生成新样本的图片放在"G:\xqy\SinGAN-master\Input\Images"路径下  
+        * 首先激活pytorch环境`conda activate pytorch13`  
+        * 在"G:\xqy\SinGAN-master"输入`python main_train.py --input_name <input_file_name>`，默认生成的图像最长边为500  
+        * 训练完毕后，在TrainedModels文件夹下会生成每个金字塔层的图像信息，保留网络权重  
+        * 运行`python random_samples.py --input_name <training_image_file_name> --mode random_samples --gen_start_scale <generation start scale number>`
+        生成新图像数据，`generation start scale number`表明通过第几层金字塔的权重进行图像生成，层数越高对应的图像与原图相似度越高，因而选较低层的会较好，
+        数据会保存在"G:\xqy\SinGAN-master\Output\RandomSamples"目录下  
+        * 由于SinGAN生成的图像通道数为4，根目录下提供了`split_channel.py`文件可将其转化为3通道图像，根目录下的`tran.bat`可以实现此功能
+        
 * 标注选用常见的VOC2012格式，文件结构如下，不用管为啥这么排：  
 ```
 数据集文件夹名称(如CAMERA_DATASET)
@@ -47,9 +61,9 @@
     3、确定左侧的save下面为PascalVOC以确保保存的标注格式为VOC格式  
     4、之后进行标注，标注的时候应该尽可能细，因为这是监督信息，根本上决定了训练的模型好坏，就按照我们希望它识别出的结果来标，且有一定自己的标准  
 
-* 标注完成后，还缺少Main文件下的两个txt文件，这里需要用本项目下的`spilt_data.py`脚本生成，运行脚本前，请修改该脚本的标注文件根目录，如(FPCcrease_DATASET/Annotations)，并按我们的期望划分训练集和验证集（小样本2：8就行，测试集需要在划分前挑选出少量放到一边）
-* 新建存放具体类别的**字典**文件（取决于标注时的输入），如`fpc_dataset.json`
-* 之后，需要新建继承了Pytorch的DataSet类的数据集文件，如`fpc_dataset.py`
+* 标注完成后，还缺少Main文件下的两个txt文件，这里需要用本项目下的`spilt_data.py`脚本生成，运行脚本前，请修改该脚本的标注文件根目录，如(CAMERA_DATASET/Annotations)，并按我们的期望划分训练集和验证集（小样本2：8就行，测试集需要在划分前挑选出少量放到一边）
+* 新建存放具体类别的**字典**文件（取决于标注时的输入），如`camera_dataset.json`
+* 之后，需要新建继承了Pytorch的DataSet类的数据集文件，如`camera_dataset.py`
 
 ## Step2 确保提前下载好对应预训练模型权重（下载后放入backbone文件夹中，并改名）
 * MobileNetV2 backbone: https://download.pytorch.org/models/mobilenet_v2-b0353104.pth
