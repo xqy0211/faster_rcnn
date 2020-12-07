@@ -24,7 +24,7 @@
 * PCB_DATASET：参考https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB
 * DAGM_DATASET：参考https://www.pythonf.cn/read/127802
 * CAMERA_DATASET：本项目的数据集，目前已采集fpccrease(FPC表面划痕)
-* 以上数据集本地都有
+* 以上数据集本地都有，且都跑通，有不错的测试结果
 
 ## 项目流程
 
@@ -78,6 +78,10 @@
 * 若要训练mobilenetv2+fasterrcnn，直接使用`python train_mobilenet.py`训练脚本
 * 若要训练resnet50+fpn+fasterrcnn，直接使用`python train_resnet50_fpn.py`训练脚本
 * 若要使用多GPU训练，使用```python -m torch.distributed.launch --nproc_per_node=8 --use_env train_multi_GPU.py```指令,```nproc_per_node```参数为使用GPU数量
+
+### 测试结果
+![](image/mAP.png)![](image/loss_and_lr.png)![](image/test.jpg)![](image/test_result.jpg)
+
 
 ## 学习资料
 https://github.com/WZMIAOMIAO/deep-learning-for-image-processing
