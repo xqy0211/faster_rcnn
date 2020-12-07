@@ -4,11 +4,11 @@ import random
 根据标注文件annotation 生成train.txt和val.txt文件
 """
 
-files_path = "./DAGM_DATASET/ANNOTATIONS"      # 保存所有xml标注文件的根目录
+files_path = "./CAMERA_DATASET/ANNOTATIONS"      # 保存所有xml标注文件的根目录
 if not os.path.exists(files_path):
     print("文件夹不存在")
     exit(1)
-val_rate = 0.4      # 验证集的比例
+val_rate = 0.2      # 验证集的比例
 
 files_name = sorted([file.split(".")[0] for file in os.listdir(files_path)])    # 遍历分割并排序
 files_num = len(files_name)

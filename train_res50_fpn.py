@@ -5,7 +5,7 @@ import torch
 import transforms
 from network_files.faster_rcnn_framework import FasterRCNN, FastRCNNPredictor
 from backbone.resnet50_fpn_model import resnet50_fpn_backbone
-from dagm_dataset import DAGMDataSet
+from camera_dataset import CameraDataSet
 from train_utils import train_eval_utils as utils
 
 
@@ -41,11 +41,11 @@ def main(parser_data):
 
     Data_root = parser_data.data_path
     # check voc root
-    if os.path.exists(os.path.join(Data_root, "FPCcrease_DATASET")) is False:
-        raise FileNotFoundError("FPCcrease_DATASET dose not in path:'{}'.".format(Data_root))
+    if os.path.exists(os.path.join(Data_root, "CAMERA_DATASET")) is False:
+        raise FileNotFoundError("CAMERA_DATASET dose not in path:'{}'.".format(Data_root))
 
     # load train data set
-    train_data_set = DAGMDataSet(Data_root, data_transform["train"], True)
+    train_data_set = CameraDataSet(Data_root, data_transform["train"], True)
 
     # 注意这里的collate_fn是自定义的，因为读取的数据包括image和targets，不能直接使用默认的方法合成batch
     batch_size = parser_data.batch_size
@@ -58,7 +58,7 @@ def main(parser_data):
                                                     collate_fn=train_data_set.collate_fn)
 
     # load validation data set
-    val_data_set = DAGMDataSet(Data_root, data_transform["val"], False)
+    val_data_set = CameraDataSet(Data_root, data_transform["val"], False)
     val_data_set_loader = torch.utils.data.DataLoader(val_data_set,
                                                       batch_size=batch_size,
                                                       shuffle=False,
@@ -66,7 +66,7 @@ def main(parser_data):
                                                       collate_fn=train_data_set.collate_fn)
 
     # create model num_classes equal background + 20 classes
-    model = create_model(num_classes=11)
+    model = create_model(num_classes=2)
     # print(model)
 
     model.to(device)

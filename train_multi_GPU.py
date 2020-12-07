@@ -142,6 +142,7 @@ def main(args):
     print('Training time {}'.format(total_time_str))
 
 
+
 if __name__ == "__main__":
     version = torch.version.__version__[:5]  # example: 1.6.0
     # 因为使用的官方的混合精度训练是1.6.0后才支持的，所以必须大于等于1.6.0
@@ -169,7 +170,7 @@ if __name__ == "__main__":
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                         help='number of data loading workers (default: 4)')
     # 学习率，这个需要根据gpu的数量以及batch_size进行设置0.02 / 8 * num_GPU
-    parser.add_argument('--lr', default=0.00125, type=float,
+    parser.add_argument('--lr', default=0.005, type=float,
                         help='initial learning rate, 0.02 is the default value for training '
                              'on 8 gpus and 2 images_per_gpu')
     # SGD的momentum参数
@@ -201,7 +202,7 @@ if __name__ == "__main__":
     )
 
     # 开启的进程数(注意不是线程)
-    parser.add_argument('--world-size', default=2, type=int,
+    parser.add_argument('--world-size', default=4, type=int,
                         help='number of distributed processes')
     parser.add_argument('--dist-url', default='env://', help='url used to set up distributed training')
 
