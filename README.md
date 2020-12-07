@@ -30,19 +30,20 @@
 
 ### Step1 确保提前准备好数据集
 * 首先的数据的采集（网上找或者拍照）与增强（用CV方法进行P图或者用SinGAN生成训练样本），之后进行标注   
-    1、**拍照**：相机得到图像为bmp图像，VOC要求图像格式为JPEG，  
+    1、**拍照**：相机得到图像为bmp图像，VOC要求图像格式为JPEG，根目录下的`tran.bat`可以实现此功能 
     2、**CV方法**：运行`python image_expand.py`将generated路径下的每个图像样本按照0.4~1的比率随机裁剪，并按1/4的概率选择翻转模式，每个样本生成20个样本  
-    3、**SinGAN方法**：更多细节参见https://github.com/tamarott/SinGAN，相关参数配置已在本地安装好，在Pytorch13版本下：  
+    3、**SinGAN方法**：相关参数配置已在本地安装好，更多细节参见https://github.com/tamarott/SinGAN：  
         * 将要生成新样本的图片放在"G:\xqy\SinGAN-master\Input\Images"路径下  
-        * 首先激活pytorch环境`conda activate pytorch13`  
-        * 在"G:\xqy\SinGAN-master"输入`python main_train.py --input_name <input_file_name>`，默认生成的图像最长边为500  
-        * 训练完毕后，在TrainedModels文件夹下会生成每个金字塔层的图像信息，保留网络权重  
-        * 运行`python random_samples.py --input_name <training_image_file_name> --mode random_samples --gen_start_scale <generation start scale number>`
-        生成新图像数据，`generation start scale number`表明通过第几层金字塔的权重进行图像生成，层数越高对应的图像与原图相似度越高，因而选较低层的会较好，
-        数据会保存在"G:\xqy\SinGAN-master\Output\RandomSamples"目录下  
-        * 由于SinGAN生成的图像通道数为4，根目录下提供了`split_channel.py`文件可将其转化为3通道图像，根目录下的`tran.bat`可以实现此功能
+        * 运行`conda activate pytorch13`激活Pytorch13环境  
+        * 在"G:\xqy\SinGAN-master"输入`python main_train.py --input_name <input_file_name>`，默认生成的图像最长边为500，改大网络会训练很慢，可以选择改小  
+        * 训练完毕后，在TrainedModels文件夹下会生成每个金字塔层的图像信息，并保留网络权重  
+        * 运行：  
+        `python random_samples.py --input_name <training_image_file_name> --mode random_samples --gen_start_scale <generation start scale number>`  
+        生成新图像数据，`generation start scale number`表明通过第几层金字塔的G权重进行图像生成，层数越高对应的图像与原图相似度越高，因而选较低且不丧失原图特性的层数会较好，
+        生成的新图像会保存在"G:\xqy\SinGAN-master\Output\RandomSamples"目录下  
+        * 由于SinGAN生成的图像通道数为4，根目录下提供了`split_channel.py`文件可将其转化为3通道图像
         
-* 标注选用常见的VOC2012格式，文件结构如下，不用管为啥这么排：  
+* 标注选用常见的VOC2012格式，文件结构如下，不用管为啥这么排（其实是因为VOC还提供图像分割功能，而我们用不上，所以是这种结构）：  
 ```
 数据集文件夹名称(如CAMERA_DATASET)
 * ├── Annotations: 存放样本图像的标注文件信息
