@@ -65,8 +65,8 @@ def main(parser_data):
                                                       num_workers=nw,
                                                       collate_fn=train_data_set.collate_fn)
 
-    # create model num_classes equal background + 20 classes
-    model = create_model(num_classes=2)
+    # create model num_classes equal background + classes number
+    model = create_model(num_classes=3)
     # print(model)
 
     model.to(device)

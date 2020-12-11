@@ -9,10 +9,10 @@ import cv2
 def random_crop(image, min_ratio=0.4, max_ratio=1.0):
     """
     对图片随机0.4~1.0比率大小的区域裁剪，保持长宽比不变
-    :param image:
+    :param image:原图
     :param min_ratio:
     :param max_ratio:
-    :return:
+    :return:裁剪后图片
     """
     h, w = image.shape[:2]
 
@@ -33,11 +33,11 @@ def random_crop(image, min_ratio=0.4, max_ratio=1.0):
 
 def crop(image):
     """
-    随机水平翻转，裁剪图片，并保存
+    先随机水平翻转，再裁剪图片，并保存
     :param image:
     :return:
     """
-    crop_times = 20    # 对于一张图随机裁剪20次
+    crop_times = 20    # 对于一张图随机裁剪20次，次数可修改
     for i in range(crop_times):
         axis = np.random.randint(low=-1, high=2)
         # axis 0 垂直翻转，1水平翻转 ，-1水平垂直翻转，2不翻转，各自以25%的可能性
@@ -54,7 +54,7 @@ def crop(image):
 
 
 if __name__ == "__main__":
-    image_root_path = r".\FPCcrease_DATASET\JPEGImages\generated"
+    image_root_path = r".\CAMERA_DATASET\JPEGImages\fpclutong"      # 修改图片根目录
     # image_name = "fpccrease_7.jpg"
 
     dir = os.listdir(image_root_path)
@@ -68,11 +68,12 @@ if __name__ == "__main__":
         index = index + 1
         print("-------------------------------------------------")
 
-        save_path = r".\FPCcrease_DATASET\JPEGImages"
+        save_path = r".\CAMERA_DATASET\JPEGImages"
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 
         crop(image)
+        print("-------------------------------------------------")
 
 
 

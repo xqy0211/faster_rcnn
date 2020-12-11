@@ -75,10 +75,10 @@ class FasterRCNNBase(nn.Module):
         for img in images:
             val = img.shape[-2:]
             assert len(val) == 2  # 防止输入的是个一维向量
-            original_image_sizes.append((val[0], val[1]))
+            original_image_sizes.append((val[0], val[1]))   # 存储图像原始尺寸
         # original_image_sizes = [img.shape[-2:] for img in images]
 
-        images, targets = self.transform(images, targets)  # 对图像进行预处理
+        images, targets = self.transform(images, targets)  # 对图像进行预处理统一大小，真正变成batch
         # print(images.tensors.shape)
         features = self.backbone(images.tensors)  # 将图像输入backbone得到特征图
         if isinstance(features, torch.Tensor):  # 若只在一层特征层上预测，将feature放入有序字典中，并编号为‘0’
@@ -247,7 +247,7 @@ class FasterRCNN(FasterRCNNBase):
                  rpn_pre_nms_top_n_train=2000, rpn_pre_nms_top_n_test=1000,    # rpn中在nms处理前保留的proposal数(根据score)
                  rpn_post_nms_top_n_train=2000, rpn_post_nms_top_n_test=1000,  # rpn中在nms处理后保留的proposal数
                  rpn_nms_thresh=0.7,  # rpn中进行nms处理时使用的iou阈值
-                 rpn_fg_iou_thresh=0.7, rpn_bg_iou_thresh=0.3,  # rpn计算损失时，采集正负样本设置的阈值
+                 rpn_fg_iou_thresh=0.7, rpn_bg_iou_thresh=0.3,  # rpn计算损失时，采集正负样本设置的阈值，有大于0.7的就为正样本，任何一个都小于0.3则为负样本
                  rpn_batch_size_per_image=256, rpn_positive_fraction=0.5,  # rpn计算损失时采样的样本数，以及正样本占总样本的比例
                  # Box parameters
                  box_roi_pool=None, box_head=None, box_predictor=None,

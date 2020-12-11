@@ -146,6 +146,11 @@ class CameraDataSet(Dataset):
 
     @staticmethod
     def collate_fn(batch):
+        """
+        将图片信息放在一起打包，target信息放在一起打包
+        :param batch: 输入为list，list内有batch_size个tuple，每个tuple包含两个元素，一个为图像数据，另一个为dict的（标注）信息
+        :return: 将相同类型的数据放在一起打包，返回tuple类型，包含两个元素，元素1包含batch_size图片，元素2包含batch_size个标注信息
+        """
         return tuple(zip(*batch))
 
 # import transforms

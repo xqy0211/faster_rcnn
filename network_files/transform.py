@@ -81,7 +81,7 @@ class GeneralizedRCNNTransform(nn.Module):
         image = torch.nn.functional.interpolate(
             image[None], scale_factor=scale_factor, mode='bilinear', align_corners=False)[0]
 
-        if target is None:
+        if target is None:  # 验证模式
             return image, target
 
         bbox = target["boxes"]
@@ -253,7 +253,6 @@ def resize_boxes(boxes, original_size, new_size):
     ymin = ymin * ratios_height
     ymax = ymax * ratios_height
     return torch.stack((xmin, ymin, xmax, ymax), dim=1)
-
 
 
 
