@@ -71,8 +71,9 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * ResNet50+FPN backbone: https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
 
 ### Step3 训练前期的路径及参数调整
-* `train_res50_fpn.py`中需要导入我们自己定义的数据集，进行部分路径的修改，主要参数修改：num_classes,learning rate(lr),lr调整策略,总epoch数(一般来说越大越好，要与lr之间平衡好)和batch_size(不爆内存的最大值),几种正则化的参数  
-* 另一个要修改的参数主要在`network_files/faster_rcnn_framework.py`中，FasterRCNN类下的proposal数,NMS阈值
+* `train_res50_fpn.py`中需要导入我们自己定义的数据集，进行部分路径的修改，类别数num_classes。  
+    调优参数修改：learning rate(lr),lr调整策略,总epoch数(一般来说越大越好，要与lr之间平衡好)和batch_size(不爆内存的最大值),几种正则化的参数  
+* 另一个调优要修改的参数主要在`network_files/faster_rcnn_framework.py`中，FasterRCNN类下的proposal数,NMS阈值
 
 ### Step4 训练模型
 * `conda activate pytorch16`
@@ -81,6 +82,7 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * 若要使用多GPU训练，使用```python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py```指令,```nproc_per_node```参数为使用GPU数量
 
 ### 测试结果
+训练结束后，本地根目录下会生成mAP和loss图。在本地添加test.jpg文件，通过`python predict.py`可以得到测试结果图。
 ![](image/mAP.png)![](image/loss_and_lr.png)![](image/fpccrease_test.jpg)![](image/fpccrease_test_result.jpg)
 
 
