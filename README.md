@@ -32,7 +32,7 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * 首先的数据的采集（网上找或者拍照）与增强（用CV方法进行P图或者用SinGAN生成训练样本），之后进行标注  
     1、**拍照**：相机得到图像为bmp图像，VOC要求图像格式为JPEG，根目录下的`trans_xml.py`可以实现批量改名（也可以修改xml标注文件的具体节点）  
     2、**CV方法**：运行`python image_expand.py`将generated路径下的每个图像样本按照0.4~1的比率随机裁剪，并按1/4的概率选择翻转模式，每个样本生成20个样本  
-    3、**SinGAN方法**：相关参数配置已在本地安装好，更多细节参见https://github.com/tamarott/SinGAN：  
+    3、**SinGAN方法**：相关参数配置已在本地安装好，更多细节参见https://github.com/tamarott/SinGAN  
         * 将要生成新样本的图片放在"G:\xqy\SinGAN-master\Input\Images"路径下  
         * 运行`conda activate pytorch13`激活Pytorch13环境  
         * 在"G:\xqy\SinGAN-master"输入`python main_train.py --input_name <input_file_name>`，默认生成的图像最长边为500，改大网络会训练很慢，可以选择改小  
@@ -71,8 +71,9 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * ResNet50+FPN backbone: https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
 
 ### Step3 训练前期的路径及参数调整
-* `train_res50_fpn.py`中需要导入我们自己定义的数据集，进行部分路径的修改，主要参数修改：num_classes,learning rate(lr),lr调整策略,总epoch数(一般来说越大越好，要与lr之间平衡好)和batch_size(不爆内存的最大值),几种正则化的参数  
-* 另一个要修改的参数主要在`network_files/faster_rcnn_framework.py`中，FasterRCNN类下的proposal数,NMS阈值
+* `train_res50_fpn.py`中需要导入我们自己定义的数据集，进行部分路径的修改，类别数num_classes。  
+    调优参数修改：learning rate(lr),lr调整策略,总epoch数(一般来说越大越好，要与lr之间平衡好)和batch_size(不爆内存的最大值),几种正则化的参数  
+* 另一个调优要修改的参数主要在`network_files/faster_rcnn_framework.py`中，FasterRCNN类下的proposal数,NMS阈值
 
 ### Step4 训练模型
 * `conda activate pytorch16`
@@ -81,6 +82,7 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * 若要使用多GPU训练，使用```python -m torch.distributed.launch --nproc_per_node=2 --use_env train_multi_GPU.py```指令,```nproc_per_node```参数为使用GPU数量
 
 ### 测试结果
+训练结束后，本地根目录下会生成mAP和loss图。在本地添加test.jpg文件，通过`python predict.py`可以得到测试结果图。
 ![](image/mAP.png)![](image/loss_and_lr.png)![](image/fpccrease_test.jpg)![](image/fpccrease_test_result.jpg)
 
 

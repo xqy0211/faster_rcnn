@@ -60,44 +60,46 @@ def main():
     class_dict = json.load(json_file)
     category_index = {v: k for k, v in class_dict.items()}
 
-    # load image
-    original_img = Image.open("./test.jpg")
+    files_path = ""
+    for index, file in enumerate(os.listdir(files_path)):
+        image_path = os.path.join(files_path, file)
+        original_img = Image.open(image_path)
+        # from pil image to tensor, do not normalize image
+        data_transform = transforms.Compose([transforms.ToTensor()])
+        img = data_transform(original_img)
+        # expand batch dimension
+        img = torch.unsqueeze(img, dim=0)
 
-    # from pil image to tensor, do not normalize image
-    data_transform = transforms.Compose([transforms.ToTensor()])
-    img = data_transform(original_img)
-    # expand batch dimension
-    img = torch.unsqueeze(img, dim=0)
+        model.eval()  # 进入验证模式
+        with torch.no_grad():
+            # init
+            img_height, img_width = img.shape[-2:]
+            init_img = torch.zeros((1, 3, img_height, img_width), device=device)
+            model(init_img)
 
-    model.eval()  # 进入验证模式
-    with torch.no_grad():
-        # init
-        img_height, img_width = img.shape[-2:]
-        init_img = torch.zeros((1, 3, img_height, img_width), device=device)
-        model(init_img)
+            t_start = time.time()
+            predictions = model(img.to(device))[0]
+            print("inference+NMS time: {}".format(time.time() - t_start))
 
-        t_start = time.time()
-        predictions = model(img.to(device))[0]
-        print("inference+NMS time: {}".format(time.time() - t_start))
+            predict_boxes = predictions["boxes"].to("cpu").numpy()
+            predict_classes = predictions["labels"].to("cpu").numpy()
+            predict_scores = predictions["scores"].to("cpu").numpy()
 
-        predict_boxes = predictions["boxes"].to("cpu").numpy()
-        predict_classes = predictions["labels"].to("cpu").numpy()
-        predict_scores = predictions["scores"].to("cpu").numpy()
+            if len(predict_boxes) == 0:
+                print("没有检测到任何目标!")
 
-        if len(predict_boxes) == 0:
-            print("没有检测到任何目标!")
 
-        draw_box(original_img,
-                 predict_boxes,
-                 predict_classes,
-                 predict_scores,
-                 category_index,
-                 thresh=0.5,
-                 line_thickness=3)
-        plt.imshow(original_img)
-        plt.show()
-        # 保存预测的图片结果
-        original_img.save("test_result.jpg")
+            draw_box(original_img,
+                     predict_boxes,
+                     predict_classes,
+                     predict_scores,
+                     category_index,
+                     thresh=0.5,
+                     line_thickness=3)
+            plt.imshow(original_img)
+            plt.show()
+            # 保存预测的图片结果
+            original_img.save(file.split(".")[0] + "test_result.jpg")
 
 
 if __name__ == '__main__':
