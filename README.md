@@ -32,7 +32,7 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 * 首先的数据的采集（网上找或者拍照）与增强（用CV方法进行P图或者用SinGAN生成训练样本），之后进行标注  
     1、**拍照**：相机得到图像为bmp图像，VOC要求图像格式为JPEG，根目录下的`trans_xml.py`可以实现批量改名（也可以修改xml标注文件的具体节点）  
     2、**CV方法**：运行`python image_expand.py`将generated路径下的每个图像样本按照0.4~1的比率随机裁剪，并按1/4的概率选择翻转模式，每个样本生成20个样本  
-    3、**SinGAN方法**：相关参数配置已在本地安装好，更多细节参见https://github.com/tamarott/SinGAN：  
+    3、**SinGAN方法**：相关参数配置已在本地安装好，更多细节参见https://github.com/tamarott/SinGAN  
         * 将要生成新样本的图片放在"G:\xqy\SinGAN-master\Input\Images"路径下  
         * 运行`conda activate pytorch13`激活Pytorch13环境  
         * 在"G:\xqy\SinGAN-master"输入`python main_train.py --input_name <input_file_name>`，默认生成的图像最长边为500，改大网络会训练很慢，可以选择改小  
