@@ -37,7 +37,7 @@ def crop(image):
     :param image:
     :return:
     """
-    crop_times = 20    # 对于一张图随机裁剪20次，次数可修改
+    crop_times = 30    # 对于一张图随机裁剪20次，次数可修改
     for i in range(crop_times):
         axis = np.random.randint(low=-1, high=2)
         # axis 0 垂直翻转，1水平翻转 ，-1水平垂直翻转，2不翻转，各自以25%的可能性
@@ -54,7 +54,7 @@ def crop(image):
 
 
 if __name__ == "__main__":
-    image_root_path = r".\CAMERA_DATASET\JPEGImages\fpclutong"      # 修改图片根目录
+    image_root_path = r"G:\xqy\faster_rcnn\TGK_DATASET\JPEGImages"      # 修改图片根目录
     # image_name = "fpccrease_7.jpg"
 
     dir = os.listdir(image_root_path)
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         index = index + 1
         print("-------------------------------------------------")
 
-        save_path = r".\CAMERA_DATASET\JPEGImages"
+        save_path = r".\TGK_DATASET\JPEGImages" # 图像保存路径
         if not os.path.exists(save_path):
             os.makedirs(save_path)
 

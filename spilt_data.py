@@ -4,7 +4,7 @@ import random
 根据标注文件annotation 生成train.txt和val.txt文件
 """
 
-files_path = "./CAMERA_DATASET/ANNOTATIONS"      # 保存所有xml标注文件的根目录
+files_path = r"G:\xqy\faster_rcnn\TGK_DATASET\Annotations"      # 保存所有xml标注文件的根目录
 if not os.path.exists(files_path):
     print("文件夹不存在")
     exit(1)
@@ -26,6 +26,7 @@ try:
     eval_f = open("val.txt", "x")
     train_f.write("\n".join(train_files))
     eval_f.write("\n".join(val_files))
+    print("根目录下生成文件：train.txt和val.txt，划分比例为[{}:{}]请放到对应Main文件夹中！".format(10-val_rate*10, val_rate*10))
 except FileExistsError as e:
     print(e)
     exit(1)

@@ -5,7 +5,8 @@ import torch
 import transforms
 from network_files.faster_rcnn_framework import FasterRCNN, FastRCNNPredictor
 from backbone.resnet50_fpn_model import resnet50_fpn_backbone
-from camera_dataset import CameraDataSet
+# from camera_dataset import CameraDataSet
+from tgk_dataset import TGKDataSet # 修改数据集库文件
 from train_utils import train_eval_utils as utils
 
 
@@ -41,11 +42,11 @@ def main(parser_data):
 
     Data_root = parser_data.data_path
     # check voc root
-    if os.path.exists(os.path.join(Data_root, "CAMERA_DATASET")) is False:
-        raise FileNotFoundError("CAMERA_DATASET dose not in path:'{}'.".format(Data_root))
+    if os.path.exists(os.path.join(Data_root, "TGK_DATASET")) is False: # 修改数据集的名字
+        raise FileNotFoundError("TGK_DATASET dose not in path:'{}'.".format(Data_root))
 
     # load train data set
-    train_data_set = CameraDataSet(Data_root, data_transform["train"], True)
+    train_data_set = TGKDataSet(Data_root, data_transform["train"], True)
 
     # 注意这里的collate_fn是自定义的，因为读取的数据包括image和targets，不能直接使用默认的方法合成batch
     batch_size = parser_data.batch_size
@@ -58,7 +59,7 @@ def main(parser_data):
                                                     collate_fn=train_data_set.collate_fn)
 
     # load validation data set
-    val_data_set = CameraDataSet(Data_root, data_transform["val"], False)
+    val_data_set = TGKDataSet(Data_root, data_transform["val"], False)
     val_data_set_loader = torch.utils.data.DataLoader(val_data_set,
                                                       batch_size=batch_size,
                                                       shuffle=False,
@@ -66,7 +67,7 @@ def main(parser_data):
                                                       collate_fn=train_data_set.collate_fn)
 
     # create model num_classes equal background + classes number
-    model = create_model(num_classes=3)
+    model = create_model(num_classes=2) # 修改标注类别数，需要+1
     # print(model)
 
     model.to(device)

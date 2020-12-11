@@ -45,7 +45,7 @@ def main():
     print("using {} device.".format(device))
 
     # create model
-    model = create_model(num_classes=3)
+    model = create_model(num_classes=2)
 
     # load train weights
     train_weights = "./save_weights/model.pth"
@@ -54,7 +54,7 @@ def main():
     model.to(device)
 
     # read class_indict
-    label_json_path = './camera_classes.json'
+    label_json_path = './tgk_classes.json'
     assert os.path.exists(label_json_path), "json file {} dose not exist.".format(label_json_path)
     json_file = open(label_json_path, 'r')
     class_dict = json.load(json_file)

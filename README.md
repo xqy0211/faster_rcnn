@@ -62,7 +62,7 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
     3、确定左侧的save下面为PascalVOC以确保保存的标注格式为VOC格式  
     4、之后进行标注，标注的时候应该尽可能细，因为这是监督信息，根本上决定了训练的模型好坏，就按照我们希望它识别出的结果来标，且有一定自己的标准  
 
-* 标注完成后，还缺少Main文件下的两个txt文件，这里需要用本项目下的`spilt_data.py`脚本生成，运行脚本前，请修改该脚本的标注文件根目录，如(CAMERA_DATASET/Annotations)，并按我们的期望划分训练集和验证集（小样本2：8就行，测试集需要在划分前挑选出少量放到一边）
+* 标注完成后，还缺少Main文件下的两个txt文件，这里需要用本项目下的`spilt_data.py`脚本生成，运行脚本前，请修改该脚本的标注文件根目录，如(CAMERA_DATASET/Annotations)，并按我们的期望划分训练集和验证集（小样本2：8就行，测试集需要在划分前挑选出少量放到一边），之后将生成的test和train文件放到数据集的Images\Main下面
 * 新建存放具体类别的**字典**文件（取决于标注时的输入），如`camera_dataset.json`
 * 之后，需要新建继承了Pytorch的DataSet类的数据集文件，如`camera_dataset.py`
 

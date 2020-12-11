@@ -9,7 +9,7 @@ def trans_name(start_index=0):
     for file in fileList:
         oldname = os.path.join(path, str(file))
 
-        newname = os.path.join(path, ("fpclutong_"+str(start_index)+".jpg"))    # 修改newname
+        newname = os.path.join(path, ("tgkcrease_"+str(start_index)+".jpg"))    # 修改newname
 
         os.rename(oldname, newname)  # 用os模块中的rename方法对文件改名
         print(oldname, '======>', newname)
@@ -35,7 +35,7 @@ def trans_xml():
 
 if __name__ == "__main__":
     # path = r"G:\xqy\faster_rcnn\DAGM_DATASET\Annotations"
-    path = r"G:\xqy\faster_rcnn\CAMERA_DATASET\JPEGImages\fpclutong"
+    path = r"C:\Users\Administrator\Desktop\tgkcrease"
     fileList = os.listdir(path)  # test有1054个,train 1046个
     trans_name(0)
     # trans_xml()
