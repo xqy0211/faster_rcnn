@@ -60,7 +60,8 @@ def main():
     class_dict = json.load(json_file)
     category_index = {v: k for k, v in class_dict.items()}
 
-    files_path = ""
+    files_path = r"C:\Users\Administrator\Desktop\tgk-test" # 测试集图像路径
+    filelen = len(os.listdir(files_path))
     for index, file in enumerate(os.listdir(files_path)):
         image_path = os.path.join(files_path, file)
         original_img = Image.open(image_path)
@@ -96,10 +97,13 @@ def main():
                      category_index,
                      thresh=0.5,
                      line_thickness=3)
-            plt.imshow(original_img)
-            plt.show()
+            # plt.imshow(original_img)
+            # plt.show()
             # 保存预测的图片结果
-            original_img.save(file.split(".")[0] + "test_result.jpg")
+            save_path = r"C:\Users\Administrator\Desktop\tgk_result"
+            image_name = file.split(".")[0] + str(predict_scores) + "_test_result.jpg"
+            original_img.save(os.path.join(save_path, image_name))
+            print("Successful save image[{}/{}]".format(index+1 ,filelen))
 
 
 if __name__ == '__main__':
