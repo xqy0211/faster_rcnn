@@ -5,6 +5,7 @@ import random
 """
 
 files_path = r"G:\xqy\faster_rcnn\TGK_DATASET\Annotations"      # 保存所有xml标注文件的根目录
+save_path = r".\TGK_DATASET\Main"
 if not os.path.exists(files_path):
     print("文件夹不存在")
     exit(1)
@@ -22,11 +23,11 @@ for index, file_name in enumerate(files_name):
         train_files.append(file_name)
 
 try:
-    train_f = open("train.txt", "x")
-    eval_f = open("val.txt", "x")
+    train_f = open(os.path.join(save_path, "train.txt"), "x")
+    eval_f = open(os.path.join(save_path, "val.txt"), "x")
     train_f.write("\n".join(train_files))
     eval_f.write("\n".join(val_files))
-    print("根目录下生成文件：train.txt和val.txt，划分比例为[{:.0f}:{:.0f}]请放到对应Main文件夹中！".format(10-val_rate*10, val_rate*10))
+    print("save目录下生成文件：train.txt和val.txt，划分比例为[{:.0f}:{:.0f}]！".format(10-val_rate*10, val_rate*10))
 except FileExistsError as e:
     print(e)
     exit(1)
