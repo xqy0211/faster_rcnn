@@ -26,7 +26,7 @@ try:
     eval_f = open("val.txt", "x")
     train_f.write("\n".join(train_files))
     eval_f.write("\n".join(val_files))
-    print("根目录下生成文件：train.txt和val.txt，划分比例为[{}:{}]请放到对应Main文件夹中！".format(10-val_rate*10, val_rate*10))
+    print("根目录下生成文件：train.txt和val.txt，划分比例为[{:.0f}:{:.0f}]请放到对应Main文件夹中！".format(10-val_rate*10, val_rate*10))
 except FileExistsError as e:
     print(e)
     exit(1)

@@ -87,5 +87,13 @@ Windows:pip install pycocotools-windows(不需要额外安装vs))
 
 
 ## 学习资料
-https://github.com/WZMIAOMIAO/deep-learning-for-image-processing
-https://space.bilibili.com/18161609?from=search&seid=15900069256992135357
+**学习网络框架**  
+* 代码部分学习（整体框架修改自此代码）  https://github.com/WZMIAOMIAO/deep-learning-for-image-processing
+* 代码部分讲解及基础  https://space.bilibili.com/18161609?from=search&seid=15900069256992135357
+
+**模型改进点**
+* 参考铝件缺陷检测（铝件数据集本地已经下好）  https://blog.csdn.net/sinat_17456165/article/details/106760612 
+
+**模型部署**
+* 参考百度（Windows下C#调用dll）  https://blog.csdn.net/SMF0504/article/details/109275908
+
