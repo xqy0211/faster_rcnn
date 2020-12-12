@@ -5,7 +5,7 @@ import random
 """
 
 files_path = r"G:\xqy\faster_rcnn\TGK_DATASET\Annotations"      # 保存所有xml标注文件的根目录
-save_path = r".\TGK_DATASET\Main"
+save_path = r".\TGK_DATASET\ImageSets\Main"
 if not os.path.exists(files_path):
     print("文件夹不存在")
     exit(1)

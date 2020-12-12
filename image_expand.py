@@ -6,7 +6,7 @@ import random
 import cv2
 
 
-def random_crop(image, min_ratio=0.4, max_ratio=1.0):
+def random_crop(image, min_ratio=0.9, max_ratio=1.0):
     """
     对图片随机0.4~1.0比率大小的区域裁剪，保持长宽比不变
     :param image:原图
@@ -44,6 +44,7 @@ def crop(image):
         if axis != 2:
             image = cv2.flip(image, axis)
         image_trans = random_crop(image)
+        image_trans = rotate(image_trans)
         try:
             image_name_new = image_name.split('.')[0]+'_crop_'+str(i)+'.jpg'
             cv2.imwrite(os.path.join(save_path, image_name_new), image_trans)
@@ -52,9 +53,19 @@ def crop(image):
         except:
             print("error")
 
+def rotate(image):
+    h, w = image.shape[:2]
+    center = (h/2, w/2)
+    degree = (random.random()-0.5) * 90
+
+    M = cv2.getRotationMatrix2D(center, degree, 1.0)
+    image = cv2.warpAffine(image, M, (w, h))
+    return image
+
+
 
 if __name__ == "__main__":
-    image_root_path = r"G:\xqy\faster_rcnn\TGK_DATASET\JPEGImages"      # 修改图片根目录
+    image_root_path = r"G:\xqy\SinGAN-master\Output\RandomSamples\tgkcrease_11_crop_14\gen_start_scale=3"      # 修改图片根目录
     # image_name = "fpccrease_7.jpg"
 
     dir = os.listdir(image_root_path)
