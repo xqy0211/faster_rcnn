@@ -2,6 +2,7 @@
 ## 环境配置：
 * Python3.6
 * Pytorch1.6
+* 终端内:pip install -r requirements
 * pycocotools(Linux: pip install pycocotools;   
 Windows:pip install pycocotools-windows(不需要额外安装vs))
 
