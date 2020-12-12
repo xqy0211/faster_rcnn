@@ -21,12 +21,10 @@ if __name__ == '__main__':
                 image = Image.open(os.path.join(reshape_path, old_name))
                 image_np = np.array(image)
                 shape_original = image_np.shape
-                if shape_original[2]== 4:
+                if shape_original[2] == 4:
                         r, g, b, a = image.split()
                         pic = Image.merge('RGB', (r, g, b))  # 合并三通道
                         pic_np = np.array(pic)
                         shape_trans = pic_np.shape
                         pic.save(os.path.join(path, "saved", old_name))
                         print("%s successfully transform from %s to %s" %(old_name, (shape_original), str(shape_trans)))
-                else:
-                        print("channel != 4")
